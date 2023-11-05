@@ -227,13 +227,20 @@ int removeNode(LIST* list, NODE* pivot)
 //print all values
 int runList(LIST* list)
 {
+    int cont = 0;
     if (list->head != NULL)
     {
         NODE* node = list->head;
         while (node != NULL)
         {
-            printf("%s \n", node->name);
-                node = node->prox;
+            cont++;
+            if (cont == 4)
+            {
+                cont = 0;
+                printf("\n");
+            }
+            printf("%16s", node->name);
+            node = node->prox;
         }
         return 1;
     }else

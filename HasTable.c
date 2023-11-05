@@ -1,6 +1,6 @@
 #include "DoubleLinkedList.c"
 #define COLUMNS 53
-#define MULTIPLY 367
+#define MULTIPLY 467
 #define PATH "E:\\projetos\\projetosGit\\C\\hashtableworking\\nomes.txt"
 
 //columns
@@ -196,7 +196,7 @@ int seeHashList(HASHTABLE* hash, int key)
     printf("start\n");
     COL* col = findColumn(hash, key);
     runList(col->list);
-    printf("end\n");
+    printf("\nend\n");
 }
 //sort
 int sortColOnHashTable(HASHTABLE* hash)
