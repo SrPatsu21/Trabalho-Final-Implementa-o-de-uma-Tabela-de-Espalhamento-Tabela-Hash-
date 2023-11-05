@@ -1,20 +1,16 @@
-#ifndef DoubleLinkedList
-#define DoubleLinkedList
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #define NULL ((void *)0)
-#define NAME_SIZE 16
 //struct
 //node
 typedef struct SNode
 {
     struct SNode* prev;
-    char name[NAME_SIZE];
+    int info;
     struct SNode* prox;
 }NODE;
 //list
-typedef struct SList{
+typedef struct{
     struct SNode* head;
     struct SNode* tail;
     int size;
@@ -36,16 +32,10 @@ void getPivotErr()
 LIST* createList()
 {
     LIST * list =(LIST*) malloc(sizeof(LIST));
-    if (list != NULL)
-    {
-        list->head = NULL;
-        list->tail = NULL;
-        list->size = 0;
-        return list;
-    }else
-    {
-        return NULL;
-    }
+    list->head = NULL;
+    list->tail = NULL;
+    list->size = 0;
+    return list;
 }
 //alloc node
 NODE* createNode()
@@ -56,11 +46,6 @@ NODE* createNode()
     {
         node->prev= NULL;
         node->prox = NULL;
-        for (int i = 0; i < NAME_SIZE; i++)
-        {
-            node->name[i] = '\0';
-        }
-        
         return node;
     }else
     {
@@ -74,12 +59,12 @@ pivot is a reference to where place or remove
 */
 
 //add node on list
-int addNode(LIST* list, char name [NAME_SIZE], NODE* pivot)
+int addNode(LIST* list, int info, NODE* pivot)
 {
     NODE* node = createNode();
     if (node != NULL)
     {
-            strcpy(node->name, name);
+        node->info = info;
             if(pivot == NULL)
             {
                 if(list->size == 0)
@@ -115,18 +100,18 @@ int addNode(LIST* list, char name [NAME_SIZE], NODE* pivot)
 }
 //other add
     //add head
-    int addHead(LIST* list, char name [NAME_SIZE])
+    void addHead(LIST* list, int info)
     {
-        return addNode(list, name, NULL);
+        addNode(list, info, NULL);
     }
     //add tail
-    int addTail(LIST* list, char name [NAME_SIZE])
+    void addTail(LIST* list, int info)
     {
-        return addNode(list, name, list->tail);
+        addNode(list, info, list->tail);
     }
 
 //to find some node using info
-NODE* findNode(LIST* list, char name [NAME_SIZE])
+NODE* findNode(LIST* list, int info)
 {
     NODE* node;
     if (list->head != NULL)
@@ -135,7 +120,7 @@ NODE* findNode(LIST* list, char name [NAME_SIZE])
         int i = 1;
         while (i == 1)
         {
-            if (node->name == name)
+            if (node->info == info)
             {
                 i=0;
             }else if(node->prox == NULL)
@@ -155,9 +140,9 @@ NODE* findNode(LIST* list, char name [NAME_SIZE])
     return node;
 }
 //to find the prev of the node
-NODE* findNodePrev(LIST* list, char name [NAME_SIZE])
+NODE* findNodePrev(LIST* list, int info)
 {
-    NODE* node = findNode(list, name);
+    NODE* node = findNode(list, info);
     if (node == NULL)
     {
         return NULL;
@@ -215,38 +200,29 @@ int removeNode(LIST* list, NODE* pivot)
 }
 //other remove
     //remove head
-    int removeHead(LIST* list)
+    void removeHead(LIST* list)
     {
-        return removeNode(list, NULL);
+        removeNode(list, NULL);
     }
     //remove tail
-    int removeTail(LIST* list)
+    void removeTail(LIST* list)
     {
-        return removeNode(list, list->tail->prev);
+        removeNode(list, list->tail->prev);
     }
 //print all values
 int runList(LIST* list)
 {
-    int cont = 0;
     if (list->head != NULL)
     {
         NODE* node = list->head;
         while (node != NULL)
         {
-            cont++;
-            if (cont == 4)
-            {
-                cont = 0;
-                printf("\n");
-            }
-            printf("%16s", node->name);
-            node = node->prox;
+            printf("%i \n", node->info);
+                node = node->prox;
         }
-        return 1;
     }else
     {
         getUnderflowErr();
-        return 0;
     }
 }
 //print all values end to start
@@ -257,7 +233,7 @@ int runBackList(LIST* list)
         NODE* node = list->tail;
         while (node != NULL)
         {
-            printf("%s \n", node->name);
+            printf("%i \n", node->info);
                 node = node->prev;
         }
     }else
@@ -267,7 +243,7 @@ int runBackList(LIST* list)
 }
 //!important!
 //clear memory 
-int freeList(LIST* list)
+void freeList(LIST* list)
 {
     if (list->head != NULL)
     {
@@ -280,71 +256,4 @@ int freeList(LIST* list)
         }
     }
     free(list);
-    return 1;
 }
-//------------------------------------------------------------------------------------------------------------------------
-//smal or equal
-int isSmaller(NODE* ns, NODE* ne)
-{
-    if (ns != NULL && ne != NULL)
-    {
-        if (ns == ne)
-        {
-            return 1;
-        }else
-        {
-            int v1 = 0;
-            int v2 = 0;
-            for (int i = 0; i < NAME_SIZE && v1 == v2; i++)
-            {
-                v1 += ns->name[i];
-                v2 += ne->name[i];
-            }
-            if (v1 <= v2)
-            {
-                return 1;
-            }else
-            {
-                return 0;
-            }
-        }
-    }else
-    {
-        return 0;
-    }
-}
-//switch two values in an array
-void swap(NODE* i, NODE* j)
-{
-    char aux [NAME_SIZE];
-	strcpy(aux, i->name);
-	strcpy(i->name, j->name);
-	strcpy(j->name, aux);
-}
-//find pivot and swap
-NODE* partition(NODE* start, NODE* end)   
-{    
-    NODE *i = start->prev;   
-    for (NODE *j = start; j != end; j = j->prox)   
-    {   
-        if (isSmaller(j, end))   
-        {   
-            i = (i == NULL)? start : i->prox;   
-            swap(i, j);   
-        }   
-    }   
-    i = (i == NULL)? start : i->prox;
-    swap(i, end);   
-    return i;   
-}
-//sort list
-void quickSort(NODE* start, NODE* end)   
-{   
-    if (end != NULL && start != end && start != end->prox)   
-    {   
-        NODE* p = partition(start, end);   
-        quickSort(start, p->prev);   
-        quickSort(p->prox, end);   
-    }   
-}  
-#endif
