@@ -197,6 +197,7 @@ int seeHashList(HASHTABLE* hash, int key)
     COL* col = findColumn(hash, key);
     runList(col->list);
     printf("\nend\n");
+    return 1;
 }
 //sort
 int sortColOnHashTable(HASHTABLE* hash)
