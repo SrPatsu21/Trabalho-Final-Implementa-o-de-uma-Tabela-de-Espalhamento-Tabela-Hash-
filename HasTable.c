@@ -1,7 +1,7 @@
 #include "DoubleLinkedList.c"
 #define COLUMNS 53
 #define MULTIPLY 467
-#define PATH "E:\\projetos\\projetosGit\\C\\hashtableworking\\nomes.txt"
+#define PATH "C:\\projetos\\Trabalho-Final-Implementa-o-de-uma-Tabela-de-Espalhamento-Tabela-Hash--main\\nomes.txt"
 
 //columns
 typedef struct SCol
@@ -281,7 +281,7 @@ void main()
                     name[i]='\0';
                 }
             }
-            printf("key:%i\n", findColumn(hash, hashing(hash, name, NAME_SIZE, COLUMNS, MULTIPLY)));
+            printf("key:%i\n", hashing(hash, name, NAME_SIZE, COLUMNS, MULTIPLY));
             removeOnColumn(findColumn(hash, hashing(hash, name, NAME_SIZE, COLUMNS, MULTIPLY)), name);   
         }else if(op == 3)
         {
@@ -307,7 +307,7 @@ void main()
                     name[i]='\0';
                 }
             }
-            printf("key:%i\n", findColumn(hash, hashing(hash, name, NAME_SIZE, COLUMNS, MULTIPLY)));
+            printf("key:%i\n", hashing(hash, name, NAME_SIZE, COLUMNS, MULTIPLY));
         }
     }
     //close

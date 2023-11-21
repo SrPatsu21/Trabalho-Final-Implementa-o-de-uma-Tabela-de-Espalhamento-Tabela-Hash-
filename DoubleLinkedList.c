@@ -135,7 +135,7 @@ NODE* findNode(LIST* list, char name [NAME_SIZE])
         int i = 1;
         while (i == 1)
         {
-            if (node->name == name)
+            if (strcmp(name, node->name) == 0)
             {
                 i=0;
             }else if(node->prox == NULL)
